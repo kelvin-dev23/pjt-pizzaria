@@ -22,6 +22,25 @@ useEffect(() => {
   function removerDoCarrinho(id: number) {
   setCarrinho((prev) => prev.filter((item) => item.id !== id))
 }
+function alterarQuantidade(id: number, tipo: "aumentar" | "diminuir") {
+  setCarrinho((prev) =>
+    prev
+      .map((item) => {
+        if (item.id === id) {
+          if (tipo === "aumentar") {
+            return { ...item, quantidade: item.quantidade + 1 }
+          }
+
+          if (tipo === "diminuir") {
+            return { ...item, quantidade: item.quantidade - 1 }
+          }
+        }
+
+        return item
+      })
+      .filter((item) => item.quantidade > 0)
+  )
+}
 
   function adicionarAoCarrinho(pizza: Pizza) {
     setCarrinho((prev) => {
@@ -40,7 +59,7 @@ useEffect(() => {
   }
 
   return (
-    <CartContext.Provider value={{ carrinho, adicionarAoCarrinho, removerDoCarrinho }}>
+    <CartContext.Provider value={{ carrinho, adicionarAoCarrinho, removerDoCarrinho, alterarQuantidade }}>
       {children}
     </CartContext.Provider>
   )

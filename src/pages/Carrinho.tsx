@@ -2,7 +2,8 @@ import { useCart } from "../context/useCart"
 
 export function Carrinho() {
   
-  const { carrinho, removerDoCarrinho } = useCart()
+  const { carrinho, removerDoCarrinho, alterarQuantidade} = useCart()
+ 
   const total = carrinho.reduce((acc, item) => {
   return acc + item.preco * item.quantidade
 }, 0)
@@ -24,6 +25,23 @@ export function Carrinho() {
   <h2 className="text-xl font-bold">
     Total: R$ {total.toFixed(2)}
   </h2>
+</div>
+<div className="flex items-center gap-3">
+  <button
+    onClick={() => alterarQuantidade(item.id, "diminuir")}
+    className="bg-gray-200 px-2 rounded"
+  >
+    -
+  </button>
+
+  <span>{item.quantidade}</span>
+
+  <button
+    onClick={() => alterarQuantidade(item.id, "aumentar")}
+    className="bg-gray-200 px-2 rounded"
+  >
+    +
+  </button>
 </div>
               <div>
                 <h2 className="font-bold">{item.nome}</h2>
