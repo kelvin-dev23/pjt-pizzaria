@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom"
 import MainLayout from "./layouts/MainLayout"
 
 import Home from "./pages/Home"
-import Cardapio from "./pages/Cardapio"
-import Carrinho from "./pages/Carrinho"
+import { Cardapio } from "./pages/Cardapio"
+import { Carrinho } from "./pages/Carrinho";
 import Checkout from "./pages/Checkout"
 import Login from "./pages/Login"
 import Cadastro from "./pages/Cadastro"
