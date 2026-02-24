@@ -1,8 +1,19 @@
 import { Link, Outlet } from "react-router-dom"
+import { useCart } from "../context/useCart"
+
+
 
 export default function MainLayout() {
+  const { carrinho } = useCart()
+
+const totalItens = carrinho.reduce((acc, item) => {
+  return acc + item.quantidade
+}, 0)
   return (
+    
     <div className="min-h-screen flex flex-col">
+      
+      
       
       {/* HEADER */}
       <header className="bg-green-700 text-white shadow-md">
@@ -15,7 +26,12 @@ export default function MainLayout() {
           <nav className="flex gap-6 font-medium">
             <Link to="/">Home</Link>
             <Link to="/cardapio">Cardápio</Link>
-            <Link to="/carrinho">Carrinho 🛒</Link>
+            <Link to="/carrinho">
+  Carrinho ({totalItens})
+</Link>
+<span className="ml-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs">
+  {totalItens}
+</span>
           </nav>
 
         </div>
