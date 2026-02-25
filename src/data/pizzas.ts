@@ -1,4 +1,4 @@
-import type { Pizza } from "../types/Pizza"
+import type { Pizza } from "../types/Pizza";
 
 export const pizzas: Pizza[] = [
   {
@@ -25,4 +25,4 @@ export const pizzas: Pizza[] = [
     imagem: "https://via.placeholder.com/300",
     categoria: "Doce",
   },
-]
+];

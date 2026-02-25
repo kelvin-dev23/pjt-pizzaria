@@ -13,18 +13,26 @@ export default function PizzaDetalhe() {
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-4">{pizza.nome}</h1>
-      <p className="mb-4">{pizza.descricao}</p>
-      <p className="text-xl font-semibold mb-4">
+    <div className="max-w-4xl mx-auto p-6">
+      <img
+        src={pizza.imagem}
+        alt={pizza.nome}
+        className="w-full h-96 object-cover rounded-lg"
+      />
+
+      <h1 className="text-3xl font-bold mt-4">{pizza.nome}</h1>
+
+      <p className="text-gray-600 mt-2">{pizza.descricao}</p>
+
+      <p className="text-2xl font-semibold text-green-600 mt-4">
         R$ {pizza.preco.toFixed(2)}
       </p>
 
       <button
         onClick={() => adicionarAoCarrinho(pizza)}
-        className="bg-red-500 text-white px-4 py-2 rounded"
+        className="mt-6 bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition"
       >
-        Adicionar ao carrinho
+        Adicionar ao Carrinho
       </button>
     </div>
   )
