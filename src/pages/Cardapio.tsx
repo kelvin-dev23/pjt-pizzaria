@@ -1,5 +1,6 @@
 import { pizzas } from "../data/pizzas"
 import  { PizzaCard } from "../components/PizzaCards"
+import { Link } from "react-router-dom"
 
 export function Cardapio() {
   return (

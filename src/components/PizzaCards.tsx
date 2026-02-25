@@ -1,12 +1,13 @@
-import type { Pizza } from "../types/Pizza"
-import { useCart } from "../context/useCart"
+import type { Pizza } from "../types/Pizza";
+import { useCart } from "../context/useCart";
+import { Link } from "react-router-dom";
 
 interface PizzaCardProps {
-  pizza: Pizza
+  pizza: Pizza;
 }
 
 export function PizzaCard({ pizza }: PizzaCardProps) {
-  const { adicionarAoCarrinho } = useCart()
+  const { adicionarAoCarrinho } = useCart();
   return (
     <div className="bg-white shadow-md rounded-xl p-4 w-72">
       <img
@@ -14,8 +15,10 @@ export function PizzaCard({ pizza }: PizzaCardProps) {
         alt={pizza.nome}
         className="w-full h-40 object-cover rounded-lg"
       />
-
-      <h2 className="text-xl font-bold mt-2">{pizza.nome}</h2>
+      <Link to={`/pizza/${pizza.id}`}>
+        <h2 className="text-xl font-bold hover:text-red-500">{pizza.nome}</h2>
+      </Link>
+      
 
       <p className="text-gray-600 text-sm">{pizza.descricao}</p>
 
@@ -25,12 +28,12 @@ export function PizzaCard({ pizza }: PizzaCardProps) {
         </span>
 
         <button
-  onClick={() => adicionarAoCarrinho(pizza)}
-  className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
->
-  Adicionar
-</button>
+          onClick={() => adicionarAoCarrinho(pizza)}
+          className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition"
+        >
+          Adicionar
+        </button>
       </div>
     </div>
-  )
+  );
 }
