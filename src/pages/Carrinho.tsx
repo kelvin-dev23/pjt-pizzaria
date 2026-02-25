@@ -1,9 +1,27 @@
+import { useState } from "react";
 import { useCart } from "../context/useCart";
+
 
 export function Carrinho() {
   const { carrinho, removerDoCarrinho, alterarQuantidade } = useCart();
+  const [nome, setNome] = useState("");
+const [telefone, setTelefone] = useState("");
+const [endereco, setEndereco] = useState("");
+const [tipoEntrega, setTipoEntrega] = useState<"delivery" | "retirada">(
+  "delivery",
+);
   function gerarMensagem() {
     let mensagem = "🍕 *Novo Pedido* 🍕\n\n";
+
+    mensagem += `👤 *Cliente:* ${nome}\n`;
+    mensagem += `📞 *Telefone:* ${telefone}\n`;
+    mensagem += `🛵 *Tipo:* ${tipoEntrega}\n`;
+
+    if (tipoEntrega === "delivery") {
+      mensagem += `📍 *Endereço:* ${endereco}\n`;
+    }
+
+    mensagem += "\n📦 *Itens do Pedido:*\n\n";
 
     carrinho.forEach((item) => {
       mensagem += `• ${item.nome} x${item.quantidade}\n`;
@@ -27,11 +45,21 @@ export function Carrinho() {
   const numeroPizzaria = "5517992668630";
 
   function enviarWhatsApp() {
-    const mensagem = gerarMensagem();
-    const url = `https://wa.me/${numeroPizzaria}?text=${mensagem}`;
-
-    window.open(url, "_blank");
+  if (!nome || !telefone) {
+    alert("Por favor, preencha nome e telefone.")
+    return
   }
+
+  if (tipoEntrega === "delivery" && !endereco) {
+    alert("Por favor, informe o endereço para delivery.")
+    return
+  }
+
+  const mensagem = gerarMensagem()
+  const url = `https://wa.me/${numeroPizzaria}?text=${mensagem}`
+
+  window.open(url, "_blank")
+}
   <button
     onClick={enviarWhatsApp}
     className="mt-4 w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition"
@@ -43,83 +71,114 @@ export function Carrinho() {
   }, 0);
 
   return (
-  <div className="p-8">
-    <h1 className="text-3xl font-bold mb-6">Seu Carrinho</h1>
+    <div className="p-8">
+      <h1 className="text-3xl font-bold mb-6">Seu Carrinho</h1>
 
-    {carrinho.length === 0 ? (
-      <p>Seu carrinho está vazio.</p>
-    ) : (
-      <>
-        <div className="space-y-4">
-          {carrinho.map((item, index) => (
-            <div
-              key={`${item.id}-${index}`}
-              className="flex justify-between items-center bg-white p-4 shadow rounded-lg"
-            >
-              <div>
-                <h2 className="font-bold">{item.nome}</h2>
-
-                {item.observacao && (
-                  <p className="text-sm text-gray-500">
-                    Obs: {item.observacao}
-                  </p>
-                )}
-
-                <p className="text-sm text-gray-600">
-                  Quantidade: {item.quantidade}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() =>
-                    alterarQuantidade(item.id, "diminuir")
-                  }
-                  className="bg-gray-200 px-2 rounded"
-                >
-                  -
-                </button>
-
-                <span>{item.quantidade}</span>
-
-                <button
-                  onClick={() =>
-                    alterarQuantidade(item.id, "aumentar")
-                  }
-                  className="bg-gray-200 px-2 rounded"
-                >
-                  +
-                </button>
-              </div>
-
-              <span className="font-semibold">
-                R$ {(item.preco * item.quantidade).toFixed(2)}
-              </span>
-
-              <button
-                onClick={() => removerDoCarrinho(item.id)}
-                className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+      {carrinho.length === 0 ? (
+        <p>Seu carrinho está vazio.</p>
+      ) : (
+        <>
+          <div className="space-y-4">
+            {carrinho.map((item, index) => (
+              <div
+                key={`${item.id}-${index}`}
+                className="flex justify-between items-center bg-white p-4 shadow rounded-lg"
               >
-                Remover
-              </button>
+                <div>
+                  <h2 className="font-bold">{item.nome}</h2>
+
+                  {item.observacao && (
+                    <p className="text-sm text-gray-500">
+                      Obs: {item.observacao}
+                    </p>
+                  )}
+
+                  <p className="text-sm text-gray-600">
+                    Quantidade: {item.quantidade}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => alterarQuantidade(item.id, "diminuir")}
+                    className="bg-gray-200 px-2 rounded"
+                  >
+                    -
+                  </button>
+
+                  <span>{item.quantidade}</span>
+
+                  <button
+                    onClick={() => alterarQuantidade(item.id, "aumentar")}
+                    className="bg-gray-200 px-2 rounded"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <span className="font-semibold">
+                  R$ {(item.preco * item.quantidade).toFixed(2)}
+                </span>
+
+                <button
+                  onClick={() => removerDoCarrinho(item.id)}
+                  className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+                >
+                  Remover
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 text-right">
+            <h2 className="text-xl font-bold">Total: R$ {total.toFixed(2)}</h2>
+            <div className="mt-6 space-y-4">
+              <input
+                type="text"
+                placeholder="Seu nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                className="w-full border p-2 rounded"
+              />
+
+              <input
+                type="text"
+                placeholder="Telefone"
+                value={telefone}
+                onChange={(e) => setTelefone(e.target.value)}
+                className="w-full border p-2 rounded"
+              />
+
+              <select
+                value={tipoEntrega}
+                onChange={(e) =>
+                  setTipoEntrega(e.target.value as "delivery" | "retirada")
+                }
+                className="w-full border p-2 rounded"
+              >
+                <option value="delivery">Delivery</option>
+                <option value="retirada">Retirada no local</option>
+              </select>
+
+              {tipoEntrega === "delivery" && (
+                <input
+                  type="text"
+                  placeholder="Endereço completo"
+                  value={endereco}
+                  onChange={(e) => setEndereco(e.target.value)}
+                  className="w-full border p-2 rounded"
+                />
+              )}
             </div>
-          ))}
-        </div>
-
-        <div className="mt-6 text-right">
-          <h2 className="text-xl font-bold">
-            Total: R$ {total.toFixed(2)}
-          </h2>
-
-          <button
-            onClick={enviarWhatsApp}
-            className="mt-4 w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition"
-          >
-            Finalizar Pedido no WhatsApp
-          </button>
-        </div>
-      </>
-    )}
-  </div>
-);
+            <button
+              onClick={enviarWhatsApp}
+              className="mt-4 w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition"
+            >
+              Finalizar Pedido no WhatsApp
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
