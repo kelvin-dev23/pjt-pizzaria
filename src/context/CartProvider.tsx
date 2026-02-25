@@ -14,6 +14,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     return [];
   });
+
   useEffect(() => {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
   }, [carrinho]);
@@ -41,13 +42,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     );
   }
 
-  function adicionarAoCarrinho(pizza: Pizza) {
+  function adicionarAoCarrinho(pizza: Pizza & { observacao?: string }) {
     setCarrinho((prev) => {
-      const itemExistente = prev.find((item) => item.id === pizza.id);
+      const itemExistente = prev.find(
+        (item) => item.id === pizza.id && item.observacao === pizza.observacao,
+      );
 
       if (itemExistente) {
         return prev.map((item) =>
-          item.id === pizza.id
+          item.id === pizza.id && item.observacao === pizza.observacao
             ? { ...item, quantidade: item.quantidade + 1 }
             : item,
         );
