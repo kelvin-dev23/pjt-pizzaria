@@ -41,6 +41,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         .filter((item) => item.quantidade > 0),
     );
   }
+  function limparCarrinho() {
+    setCarrinho([]);
+  } 
 
   function adicionarAoCarrinho(pizza: Pizza & { observacao?: string }) {
     setCarrinho((prev) => {
@@ -67,6 +70,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         adicionarAoCarrinho,
         removerDoCarrinho,
         alterarQuantidade,
+        limparCarrinho,
       }}
     >
       {children}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCart } from "../context/useCart";
 
 export function Carrinho() {
-  const { carrinho, removerDoCarrinho, alterarQuantidade } = useCart();
+  const { carrinho, removerDoCarrinho, alterarQuantidade, limparCarrinho } = useCart();
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [endereco, setEndereco] = useState("");
@@ -63,7 +63,12 @@ export function Carrinho() {
     const url = `https://wa.me/${numeroPizzaria}?text=${mensagem}`;
 
     window.open(url, "_blank");
+    limparCarrinho();
+  
   }
+
+
+  
  
   const total = carrinho.reduce((acc, item) => {
     return acc + item.preco * item.quantidade;
