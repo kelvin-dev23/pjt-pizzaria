@@ -102,6 +102,7 @@ export function Carrinho() {
     window.open(url, "_blank");
     limparCarrinho();
   }
+ 
 
   const total = carrinho.reduce((acc, item) => {
     return acc + item.preco * item.quantidade;
@@ -266,6 +267,7 @@ export function Carrinho() {
               {estaAberto()
                 ? "Finalizar Pedido no WhatsApp"
                 : "Estamos Fechados no Momento"}
+                
             </button>
           </div>
         </>

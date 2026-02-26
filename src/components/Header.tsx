@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { estaAberto } from "../utils/horario";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Header() {
   const [aberto, setAberto] = useState(estaAberto());
   const [authUser, setAuthUser] = useState<{ email: string } | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("authUser");
-
     if (storedUser) {
       setAuthUser(JSON.parse(storedUser));
     }
@@ -23,15 +22,26 @@ export function Header() {
 
     return () => clearInterval(intervalo);
   }, []);
+
   function handleLogout() {
     localStorage.removeItem("authUser");
-    navigate("/");
-    window.location.reload();
+    navigate("/login");
   }
+
   return (
-    <header className="bg-primary text-light shadow-md">
-      <div className="flex items-center gap-4">
+    <header className="bg-primary text-light shadow-md p-4 relative">
+
+      <div className="flex justify-between items-center">
+
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="text-2xl"
+        >
+          ☰
+        </button>
+
         <h1 className="text-xl font-bold">🍕 Casa da Pizza</h1>
+
         <div className="flex items-center gap-4">
           {authUser ? (
             <>
@@ -39,7 +49,7 @@ export function Header() {
 
               <button
                 onClick={handleLogout}
-                className="bg-secondary text-light px-4 py-2 rounded-lg font-bold"
+                className="bg-secondary px-4 py-2 rounded-lg font-bold"
               >
                 Sair
               </button>
@@ -47,13 +57,15 @@ export function Header() {
           ) : (
             <button
               onClick={() => navigate("/login")}
-              className="bg-secondary text-light px-4 py-2 rounded-lg font-bold"
+              className="bg-secondary px-4 py-2 rounded-lg font-bold"
             >
               Entrar
             </button>
           )}
         </div>
+      </div>
 
+      <div className="mt-3">
         {aberto ? (
           <span className="bg-green-500 px-3 py-1 rounded-full text-sm font-semibold">
             🟢 Estamos Abertos
@@ -65,11 +77,26 @@ export function Header() {
         )}
       </div>
 
-      <nav className="flex gap-4">
-        <Link to="/">Home</Link>
-        <Link to="/cardapio">Cardápio</Link>
-        <Link to="/carrinho">Carrinho</Link>
-      </nav>
+      {menuOpen && (
+        <div className="fixed top-0 left-0 w-64 h-full bg-primary text-light p-6 z-50 shadow-lg">
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="mb-6 text-xl"
+          >
+            ✕
+          </button>
+
+          <nav className="flex flex-col gap-4 text-lg font-semibold">
+            <Link to="/cardapio">Cardápio</Link>
+            <Link to="/promocoes">Promoções</Link>
+            <Link to="/carrinho">Meu Carrinho</Link>
+            <Link to="/pedidos">Meus Pedidos</Link>
+            <Link to="/conta">Minha Conta</Link>
+            <Link to="/localizacao">Localização</Link>
+          </nav>
+        </div>
+      )}
+
     </header>
   );
 }
