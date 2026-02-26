@@ -213,19 +213,9 @@ export function Carrinho() {
           <div className="mt-6 text-right">
             <h2 className="text-xl font-bold">Total: R$ {total.toFixed(2)}</h2>
             <div className="mt-6 space-y-4">
-              <input
-                type="text"
-                placeholder="Seu nome"
-                value={nome}
-                className="w-full border p-2 rounded"
-              />
+              
 
-              <input
-                type="text"
-                placeholder="Telefone"
-                value={telefone}
-                className="w-full border p-2 rounded"
-              />
+              
 
               <select
                 value={tipoEntrega}
@@ -238,14 +228,7 @@ export function Carrinho() {
                 <option value="retirada">Retirada no local</option>
               </select>
 
-              {tipoEntrega === "delivery" && (
-                <input
-                  type="text"
-                  placeholder="Endereço completo"
-                  value={endereco}
-                  className="w-full border p-2 rounded"
-                />
-              )}
+             
             </div>
             <div className="mt-4">
               <label className="block mb-2 font-semibold">
