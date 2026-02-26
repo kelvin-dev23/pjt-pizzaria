@@ -13,7 +13,7 @@ export function Header() {
     return () => clearInterval(intervalo)
   }, [])
   return (
-    <header className="bg-green-800 text-white p-4 flex justify-between items-center">
+    <header className="bg-primary text-light shadow-md">
       <div className="flex items-center gap-4">
         <h1 className="text-xl font-bold">🍕 Casa da Pizza</h1>
 

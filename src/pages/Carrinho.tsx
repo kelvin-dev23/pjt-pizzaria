@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { useCart  } from "../context/useCart";
+import { useCart } from "../context/useCart";
 
 export function Carrinho() {
   const { carrinho, removerDoCarrinho, alterarQuantidade, limparCarrinho } =
     useCart();
+  const [trocoPara, setTrocoPara] = useState("");
+  const [formaPagamento, setFormaPagamento] = useState("");
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [endereco, setEndereco] = useState("");
@@ -40,16 +42,17 @@ export function Carrinho() {
 
     mensagem += `💰 *Total: R$ ${total.toFixed(2)}*`;
 
+    mensagem += `Forma de pagamento: ${formaPagamento}\n`;
+
+    if (formaPagamento === "Dinheiro" && trocoPara) {
+      mensagem += `💵 Troco para: R$ ${trocoPara}\n`;
+    }
+
     return encodeURIComponent(mensagem);
   }
   const numeroPizzaria = "5517992668630";
 
   function enviarWhatsApp() {
-    if (!estaAberto()) {
-      alert("Estamos fechados no momento. Funcionamos das 19h às 23h.");
-      return;
-    }
-
     if (!nome || !telefone) {
       alert("Por favor, preencha nome e telefone.");
       return;
@@ -57,6 +60,14 @@ export function Carrinho() {
 
     if (tipoEntrega === "delivery" && !endereco) {
       alert("Por favor, informe o endereço para delivery.");
+      return;
+    }
+    if (!formaPagamento) {
+      alert("Selecione a forma de pagamento");
+      return;
+    }
+    if (formaPagamento === "Dinheiro" && !trocoPara) {
+      alert("Informe o valor para troco.");
       return;
     }
 
@@ -71,7 +82,7 @@ export function Carrinho() {
     return acc + item.preco * item.quantidade;
   }, 0);
 
-    function estaAberto() {
+  function estaAberto() {
     const agora = new Date();
 
     const diaSemana = agora.getDay();
@@ -86,14 +97,7 @@ export function Carrinho() {
     const horarioValido = hora >= horaAbertura && hora < horaFechamento;
 
     return diaValido && horarioValido;
-  } 
-  if (!estaAberto()) {
-    alert(
-      "Estamos fechados no momento.\nFuncionamos de Quinta a Domingo, das 19h às 23h.",
-    );
-    return;
- } 
-  
+  }
 
   return (
     <div className="p-8">
@@ -126,7 +130,7 @@ export function Carrinho() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => alterarQuantidade(item.id, "diminuir")}
-                    className="bg-gray-200 px-2 rounded"
+                    className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
                   >
                     -
                   </button>
@@ -135,7 +139,7 @@ export function Carrinho() {
 
                   <button
                     onClick={() => alterarQuantidade(item.id, "aumentar")}
-                    className="bg-gray-200 px-2 rounded"
+                    className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
                   >
                     +
                   </button>
@@ -147,7 +151,7 @@ export function Carrinho() {
 
                 <button
                   onClick={() => removerDoCarrinho(item.id)}
-                  className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
+                  className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
                 >
                   Remover
                 </button>
@@ -179,7 +183,7 @@ export function Carrinho() {
                 onChange={(e) =>
                   setTipoEntrega(e.target.value as "delivery" | "retirada")
                 }
-                className="w-full border p-2 rounded"
+                className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
               >
                 <option value="delivery">Delivery</option>
                 <option value="retirada">Retirada no local</option>
@@ -195,13 +199,43 @@ export function Carrinho() {
                 />
               )}
             </div>
+            <div className="mt-4">
+              <label className="block mb-2 font-semibold">
+                Forma de pagamento
+              </label>
+
+              <select
+                value={formaPagamento}
+                onChange={(e) => setFormaPagamento(e.target.value)}
+                className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
+              >
+                <option value="">Selecione</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Pix">Pix</option>
+                <option value="Cartão">Cartão</option>
+                {formaPagamento === "Dinheiro" && (
+                  <div className="mt-4">
+                    <label className="block mb-2 font-semibold">
+                      Troco para quanto?
+                    </label>
+                    <input
+                      type="number"
+                      value={trocoPara}
+                      onChange={(e) => setTrocoPara(e.target.value)}
+                      className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
+                      placeholder="Ex: 100"
+                    />
+                  </div>
+                )}
+              </select>
+            </div>
             <button
               onClick={enviarWhatsApp}
               disabled={!estaAberto()}
               className={`mt-4 w-full py-3 rounded-lg transition ${
                 estaAberto()
-                  ? "bg-green-500 hover:bg-green-600 text-white"
-                  : "bg-gray-400 text-white cursor-not-allowed"
+                  ? "bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
+                  : "bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
               }`}
             >
               {estaAberto()

@@ -8,9 +8,9 @@ export default function MainLayout() {
     return acc + item.quantidade;
   }, 0);
   return (
-    <div className="min-h-screen flex flex-col">
+   <div className="min-h-screen bg-primary text-light">
       {/* HEADER */}
-      <header className="bg-green-700 text-white shadow-md">
+      <header className="bg-primary text-light shadow-md">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">🍕 Casa da Pizza</h1>
 

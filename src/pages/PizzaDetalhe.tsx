@@ -44,7 +44,7 @@ export default function PizzaDetalhe() {
 
       <button
         onClick={() => adicionarAoCarrinho({ ...pizza, observacao })}
-        className="mt-6 bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition"
+      className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
       >
         Adicionar ao Carrinho
       </button>

@@ -9,7 +9,7 @@ interface PizzaCardProps {
 export function PizzaCard({ pizza }: PizzaCardProps) {
   const { adicionarAoCarrinho } = useCart();
   return (
-    <div className="bg-white shadow-md rounded-xl p-4 w-72">
+    <div className="bg-light text-black rounded-xl shadow-lg p-4">
       <img
         src={pizza.imagem}
         alt={pizza.nome}
@@ -23,7 +23,7 @@ export function PizzaCard({ pizza }: PizzaCardProps) {
       <p className="text-gray-600 text-sm">{pizza.descricao}</p>
 
       <div className="flex justify-between items-center mt-3">
-        <span className="text-lg font-semibold text-green-600">
+        <span className="text-secondary font-bold text-lg">
           R$ {pizza.preco.toFixed(2)}
         </span>
 
