@@ -16,6 +16,7 @@ import { Dashboard } from "./pages/Admin/Dashboard";
 import { Pedidos } from "./pages/Admin/Pedidos";
 import { Produtos } from "./pages/Admin/Produtos";
 import { Promocoes } from "./pages/Admin/Promocoes";
+import { AdminLogin } from "./pages/Admin/AdminLogin";
 <>
   <Header />
   <Routes>...</Routes>
@@ -23,6 +24,7 @@ import { Promocoes } from "./pages/Admin/Promocoes";
 
 function App() {
   return (
+    
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
@@ -34,12 +36,14 @@ function App() {
         <Route path="/pizza/:id" element={<PizzaDetalhe />} />
         <Route path="/conta" element={<MinhaConta />} />
         <Route path="/meus-pedidos" element={<MeusPedidos />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
-  <Route index element={<Dashboard />} />
-  <Route path="pedidos" element={<Pedidos />} />
-  <Route path="produtos" element={<Produtos />} />
-  <Route path="promocoes" element={<Promocoes />} />
-</Route>
+          <Route index element={<Dashboard />} />
+          <Route path="pedidos" element={<Pedidos />} />
+          <Route path="produtos" element={<Produtos />} />
+          <Route path="promocoes" element={<Promocoes />} />
+         
+        </Route>
       </Route>
     </Routes>
   );
