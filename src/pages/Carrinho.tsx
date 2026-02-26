@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { useCart } from "../context/useCart";
 
-
 export function Carrinho() {
   const { carrinho, removerDoCarrinho, alterarQuantidade } = useCart();
   const [nome, setNome] = useState("");
-const [telefone, setTelefone] = useState("");
-const [endereco, setEndereco] = useState("");
-const [tipoEntrega, setTipoEntrega] = useState<"delivery" | "retirada">(
-  "delivery",
-);
+  const [telefone, setTelefone] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [tipoEntrega, setTipoEntrega] = useState<"delivery" | "retirada">(
+    "delivery",
+  );
   function gerarMensagem() {
     let mensagem = "🍕 *Novo Pedido* 🍕\n\n";
 
@@ -45,30 +44,40 @@ const [tipoEntrega, setTipoEntrega] = useState<"delivery" | "retirada">(
   const numeroPizzaria = "5517992668630";
 
   function enviarWhatsApp() {
-  if (!nome || !telefone) {
-    alert("Por favor, preencha nome e telefone.")
-    return
+    if (!estaAberto()) {
+      alert("Estamos fechados no momento. Funcionamos das 19h às 23h.");
+      return;
+    }
+
+    if (!nome || !telefone) {
+      alert("Por favor, preencha nome e telefone.");
+      return;
+    }
+
+    if (tipoEntrega === "delivery" && !endereco) {
+      alert("Por favor, informe o endereço para delivery.");
+      return;
+    }
+
+    const mensagem = gerarMensagem();
+    const url = `https://wa.me/${numeroPizzaria}?text=${mensagem}`;
+
+    window.open(url, "_blank");
   }
-
-  if (tipoEntrega === "delivery" && !endereco) {
-    alert("Por favor, informe o endereço para delivery.")
-    return
-  }
-
-  const mensagem = gerarMensagem()
-  const url = `https://wa.me/${numeroPizzaria}?text=${mensagem}`
-
-  window.open(url, "_blank")
-}
-  <button
-    onClick={enviarWhatsApp}
-    className="mt-4 w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition"
-  >
-    Finalizar Pedido no WhatsApp
-  </button>;
+ 
   const total = carrinho.reduce((acc, item) => {
     return acc + item.preco * item.quantidade;
   }, 0);
+
+  function estaAberto() {
+    const agora = new Date();
+    const hora = agora.getHours();
+
+    const horaAbertura = 19;
+    const horaFechamento = 23; // 23:00
+
+    return hora >= horaAbertura && hora < horaFechamento;
+  }
 
   return (
     <div className="p-8">
@@ -172,9 +181,16 @@ const [tipoEntrega, setTipoEntrega] = useState<"delivery" | "retirada">(
             </div>
             <button
               onClick={enviarWhatsApp}
-              className="mt-4 w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition"
+              disabled={!estaAberto()}
+              className={`mt-4 w-full py-3 rounded-lg transition ${
+                estaAberto()
+                  ? "bg-green-500 hover:bg-green-600 text-white"
+                  : "bg-gray-400 text-white cursor-not-allowed"
+              }`}
             >
-              Finalizar Pedido no WhatsApp
+              {estaAberto()
+                ? "Finalizar Pedido no WhatsApp"
+                : "Estamos Fechados no Momento"}
             </button>
           </div>
         </>
