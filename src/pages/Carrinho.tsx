@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useCart } from "../context/useCart";
+import { useCart  } from "../context/useCart";
 
 export function Carrinho() {
   const { carrinho, removerDoCarrinho, alterarQuantidade, limparCarrinho } =
@@ -71,7 +71,7 @@ export function Carrinho() {
     return acc + item.preco * item.quantidade;
   }, 0);
 
-  function estaAberto() {
+    function estaAberto() {
     const agora = new Date();
 
     const diaSemana = agora.getDay();
@@ -86,13 +86,14 @@ export function Carrinho() {
     const horarioValido = hora >= horaAbertura && hora < horaFechamento;
 
     return diaValido && horarioValido;
-  }
+  } 
   if (!estaAberto()) {
     alert(
       "Estamos fechados no momento.\nFuncionamos de Quinta a Domingo, das 19h às 23h.",
     );
     return;
-  }
+ } 
+  
 
   return (
     <div className="p-8">

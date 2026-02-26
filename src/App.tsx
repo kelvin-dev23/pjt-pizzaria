@@ -1,13 +1,18 @@
-import { Routes, Route } from "react-router-dom"
-import MainLayout from "./layouts/MainLayout"
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
+import { Header } from "./components/Header";
 
-import Home from "./pages/Home"
-import { Cardapio } from "./pages/Cardapio"
+import Home from "./pages/Home";
+import { Cardapio } from "./pages/Cardapio";
 import { Carrinho } from "./pages/Carrinho";
-import Checkout from "./pages/Checkout"
-import Login from "./pages/Login"
-import Cadastro from "./pages/Cadastro"
-import PizzaDetalhe from "./pages/PizzaDetalhe"
+import Checkout from "./pages/Checkout";
+import Login from "./pages/Login";
+import Cadastro from "./pages/Cadastro";
+import PizzaDetalhe from "./pages/PizzaDetalhe";
+<>
+  <Header />
+  <Routes>...</Routes>
+</>;
 
 function App() {
   return (
@@ -22,7 +27,7 @@ function App() {
         <Route path="/pizza/:id" element={<PizzaDetalhe />} />
       </Route>
     </Routes>
-  )
+  );
 }
 
-export default App  
+export default App;
