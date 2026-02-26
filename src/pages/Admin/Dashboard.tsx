@@ -25,30 +25,34 @@ export function Dashboard() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+      <h1 className="text-4xl font-bold mb-10">📊 Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold">Pedidos</h2>
-          <p className="text-3xl font-bold mt-2">{totalPedidos}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        {/* PEDIDOS */}
+        <div className="bg-blue-600 text-white p-6 rounded-2xl shadow-lg">
+          <h2 className="text-lg font-medium opacity-80">Pedidos</h2>
+          <p className="text-4xl font-bold mt-2">{totalPedidos}</p>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold">Total em Vendas</h2>
-          <p className="text-3xl font-bold mt-2">
+        {/* VENDAS */}
+        <div className="bg-green-600 text-white p-6 rounded-2xl shadow-lg">
+          <h2 className="text-lg font-medium opacity-80">Faturamento</h2>
+          <p className="text-4xl font-bold mt-2">
             R$ {totalVendas.toFixed(2)}
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold">Produtos</h2>
-          <p className="text-3xl font-bold mt-2">{totalProdutos}</p>
+        {/* PRODUTOS */}
+        <div className="bg-purple-600 text-white p-6 rounded-2xl shadow-lg">
+          <h2 className="text-lg font-medium opacity-80">Produtos</h2>
+          <p className="text-4xl font-bold mt-2">{totalProdutos}</p>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold">Promoções</h2>
-          <p className="text-3xl font-bold mt-2">{totalPromocoes}</p>
+        {/* PROMOÇÕES */}
+        <div className="bg-orange-500 text-white p-6 rounded-2xl shadow-lg">
+          <h2 className="text-lg font-medium opacity-80">Promoções</h2>
+          <p className="text-4xl font-bold mt-2">{totalPromocoes}</p>
         </div>
 
       </div>
