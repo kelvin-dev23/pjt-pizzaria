@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useCart } from "../context/useCart";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export function Carrinho() {
   const { carrinho, removerDoCarrinho, alterarQuantidade, limparCarrinho } =
@@ -12,6 +14,25 @@ export function Carrinho() {
   const [tipoEntrega, setTipoEntrega] = useState<"delivery" | "retirada">(
     "delivery",
   );
+  useEffect(() => {
+    const savedProfile = localStorage.getItem("userProfile");
+
+    if (savedProfile) {
+      const profile = JSON.parse(savedProfile);
+      setNome(profile.nome || "");
+      setTelefone(profile.telefone || "");
+      setEndereco(profile.endereco || "");
+    }
+  }, []);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const authUser = localStorage.getItem("authUser");
+
+    if (!authUser) {
+      navigate("/login");
+    }
+  }, [navigate]);
   function gerarMensagem() {
     let mensagem = "🍕 *Novo Pedido* 🍕\n\n";
 
@@ -39,11 +60,8 @@ export function Carrinho() {
       (acc, item) => acc + item.preco * item.quantidade,
       0,
     );
-
-    mensagem += `💰 *Total: R$ ${total.toFixed(2)}*`;
-
-    mensagem += `Forma de pagamento: ${formaPagamento}\n`;
-
+    mensagem += `💰 *Total: R$ ${total.toFixed(2)}*\n`;
+    mensagem += `💳 Forma de pagamento: ${formaPagamento}\n`;
     if (formaPagamento === "Dinheiro" && trocoPara) {
       mensagem += `💵 Troco para: R$ ${trocoPara}\n`;
     }
@@ -73,6 +91,13 @@ export function Carrinho() {
 
     const mensagem = gerarMensagem();
     const url = `https://wa.me/${numeroPizzaria}?text=${mensagem}`;
+    const profile = {
+      nome,
+      telefone,
+      endereco,
+    };
+
+    localStorage.setItem("userProfile", JSON.stringify(profile));
 
     window.open(url, "_blank");
     limparCarrinho();
@@ -213,21 +238,21 @@ export function Carrinho() {
                 <option value="Dinheiro">Dinheiro</option>
                 <option value="Pix">Pix</option>
                 <option value="Cartão">Cartão</option>
-                {formaPagamento === "Dinheiro" && (
-                  <div className="mt-4">
-                    <label className="block mb-2 font-semibold">
-                      Troco para quanto?
-                    </label>
-                    <input
-                      type="number"
-                      value={trocoPara}
-                      onChange={(e) => setTrocoPara(e.target.value)}
-                      className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
-                      placeholder="Ex: 100"
-                    />
-                  </div>
-                )}
               </select>
+              {formaPagamento === "Dinheiro" && (
+                <div className="mt-4">
+                  <label className="block mb-2 font-semibold">
+                    Troco para quanto?
+                  </label>
+                  <input
+                    type="number"
+                    value={trocoPara}
+                    onChange={(e) => setTrocoPara(e.target.value)}
+                    className="w-full border p-2 rounded"
+                    placeholder="Ex: 100"
+                  />
+                </div>
+              )}
             </div>
             <button
               onClick={enviarWhatsApp}

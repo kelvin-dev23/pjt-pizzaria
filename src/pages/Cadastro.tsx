@@ -9,7 +9,7 @@ export default function Login() {
     complemento: ""
   })
 
-  // Quando a página abrir, verificar se já existe usuário salvo
+  // Carrega usuário salvo ao abrir a página
   useEffect(() => {
     const savedUser = localStorage.getItem("user")
 
