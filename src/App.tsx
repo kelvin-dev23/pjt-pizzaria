@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import PizzaDetalhe from "./pages/PizzaDetalhe";
 import { MinhaConta } from "./pages/MinhaConta";
+import { MeusPedidos } from "./pages/MeusPedidos";
 <>
   <Header />
   <Routes>...</Routes>
@@ -27,6 +28,7 @@ function App() {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/pizza/:id" element={<PizzaDetalhe />} />
         <Route path="/conta" element={<MinhaConta />} />
+        <Route path="/meus-pedidos" element={<MeusPedidos />} />
       </Route>
     </Routes>
   );

@@ -105,6 +105,25 @@ export function Carrinho() {
     };
 
     localStorage.setItem("userProfile", JSON.stringify(profile));
+    const novoPedido = {
+      id: Date.now(),
+      data: new Date().toLocaleString(),
+      itens: carrinho,
+      total,
+      tipoEntrega,
+    };
+
+    const pedidosSalvos = localStorage.getItem("meusPedidos");
+
+    let listaPedidos = [];
+
+    if (pedidosSalvos) {
+      listaPedidos = JSON.parse(pedidosSalvos);
+    }
+
+    listaPedidos.push(novoPedido);
+
+    localStorage.setItem("meusPedidos", JSON.stringify(listaPedidos));
 
     window.open(url, "_blank");
     limparCarrinho();
