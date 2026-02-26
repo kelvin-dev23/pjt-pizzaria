@@ -8,9 +8,7 @@ export function Carrinho() {
     useCart();
   const [trocoPara, setTrocoPara] = useState("");
   const [formaPagamento, setFormaPagamento] = useState("");
-  const [nome, setNome] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [endereco, setEndereco] = useState("");
+
   const [tipoEntrega, setTipoEntrega] = useState<"delivery" | "retirada">(
     "delivery",
   );
@@ -19,9 +17,6 @@ export function Carrinho() {
 
     if (savedProfile) {
       const profile = JSON.parse(savedProfile);
-      setNome(profile.nome || "");
-      setTelefone(profile.telefone || "");
-      setEndereco(profile.endereco || "");
     }
   }, []);
   const navigate = useNavigate();
@@ -69,6 +64,18 @@ export function Carrinho() {
     return encodeURIComponent(mensagem);
   }
   const numeroPizzaria = "5517992668630";
+  const savedProfile = localStorage.getItem("userProfile");
+
+  if (!savedProfile) {
+    alert("Complete seus dados em Minha Conta antes de finalizar.");
+    navigate("/conta");
+    return;
+  }
+
+  const profile = JSON.parse(savedProfile);
+  const nome = profile.nome;
+  const telefone = profile.telefone;
+  const endereco = profile.endereco;
 
   function enviarWhatsApp() {
     if (!nome || !telefone) {
@@ -102,7 +109,6 @@ export function Carrinho() {
     window.open(url, "_blank");
     limparCarrinho();
   }
- 
 
   const total = carrinho.reduce((acc, item) => {
     return acc + item.preco * item.quantidade;
@@ -192,7 +198,6 @@ export function Carrinho() {
                 type="text"
                 placeholder="Seu nome"
                 value={nome}
-                onChange={(e) => setNome(e.target.value)}
                 className="w-full border p-2 rounded"
               />
 
@@ -200,7 +205,6 @@ export function Carrinho() {
                 type="text"
                 placeholder="Telefone"
                 value={telefone}
-                onChange={(e) => setTelefone(e.target.value)}
                 className="w-full border p-2 rounded"
               />
 
@@ -220,7 +224,6 @@ export function Carrinho() {
                   type="text"
                   placeholder="Endereço completo"
                   value={endereco}
-                  onChange={(e) => setEndereco(e.target.value)}
                   className="w-full border p-2 rounded"
                 />
               )}
@@ -267,7 +270,6 @@ export function Carrinho() {
               {estaAberto()
                 ? "Finalizar Pedido no WhatsApp"
                 : "Estamos Fechados no Momento"}
-                
             </button>
           </div>
         </>
