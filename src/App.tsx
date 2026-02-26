@@ -9,6 +9,7 @@ import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import PizzaDetalhe from "./pages/PizzaDetalhe";
+import { MinhaConta } from "./pages/MinhaConta";
 <>
   <Header />
   <Routes>...</Routes>
@@ -25,6 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/pizza/:id" element={<PizzaDetalhe />} />
+        <Route path="/conta" element={<MinhaConta />} />
       </Route>
     </Routes>
   );
