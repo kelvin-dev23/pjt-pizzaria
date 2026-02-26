@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useCart } from "../context/useCart";
 
 export function Carrinho() {
-  const { carrinho, removerDoCarrinho, alterarQuantidade, limparCarrinho } = useCart();
+  const { carrinho, removerDoCarrinho, alterarQuantidade, limparCarrinho } =
+    useCart();
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [endereco, setEndereco] = useState("");
@@ -64,24 +65,33 @@ export function Carrinho() {
 
     window.open(url, "_blank");
     limparCarrinho();
-  
   }
 
-
-  
- 
   const total = carrinho.reduce((acc, item) => {
     return acc + item.preco * item.quantidade;
   }, 0);
 
   function estaAberto() {
     const agora = new Date();
+
+    const diaSemana = agora.getDay();
+
     const hora = agora.getHours();
 
+    const diasFuncionamento = [0, 4, 5, 6]; // Dom, Qui, Sex, Sab
     const horaAbertura = 19;
-    const horaFechamento = 23; // 23:00
+    const horaFechamento = 23;
 
-    return hora >= horaAbertura && hora < horaFechamento;
+    const diaValido = diasFuncionamento.includes(diaSemana);
+    const horarioValido = hora >= horaAbertura && hora < horaFechamento;
+
+    return diaValido && horarioValido;
+  }
+  if (!estaAberto()) {
+    alert(
+      "Estamos fechados no momento.\nFuncionamos de Quinta a Domingo, das 19h às 23h.",
+    );
+    return;
   }
 
   return (

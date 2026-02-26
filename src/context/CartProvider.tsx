@@ -19,9 +19,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
   }, [carrinho]);
 
+  
+
   function removerDoCarrinho(id: number) {
     setCarrinho((prev) => prev.filter((item) => item.id !== id));
   }
+  
   function alterarQuantidade(id: number, tipo: "aumentar" | "diminuir") {
     setCarrinho((prev) =>
       prev
