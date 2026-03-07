@@ -1,16 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Produtos() {
+  const [pizzas, setPizzas] = useState<any[]>([]);
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
 
-  function adicionarPizza() {
+  useEffect(() => {
     const pizzasSalvas = localStorage.getItem("pizzas");
 
-    let lista = [];
-
     if (pizzasSalvas) {
-      lista = JSON.parse(pizzasSalvas);
+      setPizzas(JSON.parse(pizzasSalvas));
+    }
+  }, []);
+
+  function salvarLista(lista: any[]) {
+    setPizzas(lista);
+    localStorage.setItem("pizzas", JSON.stringify(lista));
+  }
+
+  function adicionarPizza() {
+    if (!nome || !preco) {
+      alert("Preencha nome e preço.");
+      return;
     }
 
     const novaPizza = {
@@ -19,25 +30,26 @@ export function Produtos() {
       preco: Number(preco),
     };
 
-    lista.push(novaPizza);
+    const novaLista = [...pizzas, novaPizza];
 
-    localStorage.setItem("pizzas", JSON.stringify(lista));
+    salvarLista(novaLista);
 
     setNome("");
     setPreco("");
+  }
 
-    alert("Pizza adicionada!");
+  function removerPizza(id: number) {
+    const novaLista = pizzas.filter((pizza) => pizza.id !== id);
+    salvarLista(novaLista);
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">
-        Gerenciar Produtos
-      </h1>
+    <div className="p-4 md:p-8 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Gerenciar Pizzas</h1>
 
-      <div className="space-y-4 max-w-md">
-
+      <div className="bg-white shadow p-4 rounded-lg mb-6 space-y-3">
         <input
+          type="text"
           placeholder="Nome da pizza"
           value={nome}
           onChange={(e) => setNome(e.target.value)}
@@ -45,8 +57,8 @@ export function Produtos() {
         />
 
         <input
-          placeholder="Preço"
           type="number"
+          placeholder="Preço"
           value={preco}
           onChange={(e) => setPreco(e.target.value)}
           className="w-full border p-2 rounded"
@@ -54,11 +66,33 @@ export function Produtos() {
 
         <button
           onClick={adicionarPizza}
-          className="bg-green-600 text-white px-4 py-2 rounded"
+          className="bg-green-600 text-white px-4 py-2 rounded-lg"
         >
           Adicionar Pizza
         </button>
+      </div>
 
+      <div className="space-y-3">
+        {pizzas.map((pizza) => (
+          <div
+            key={pizza.id}
+            className="flex justify-between items-center bg-white p-4 shadow rounded-lg"
+          >
+            <div>
+              <p className="font-semibold">{pizza.nome}</p>
+              <p className="text-sm text-gray-600">
+                R$ {pizza.preco.toFixed(2)}
+              </p>
+            </div>
+
+            <button
+              onClick={() => removerPizza(pizza.id)}
+              className="bg-red-600 text-white px-3 py-1 rounded"
+            >
+              Remover
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
