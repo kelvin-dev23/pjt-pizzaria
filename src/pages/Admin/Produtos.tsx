@@ -1,127 +1,64 @@
-import { useEffect, useState } from "react";
-
-interface Produto {
-  id: number;
-  nome: string;
-  preco: number;
-}
+import { useState } from "react";
 
 export function Produtos() {
-  const [produtos, setProdutos] = useState<Produto[]>([]);
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
-  const [editandoId, setEditandoId] = useState<number | null>(null);
 
-  useEffect(() => {
-    const produtosSalvos = JSON.parse(localStorage.getItem("produtos") || "[]");
-    setProdutos(produtosSalvos);
-  }, []);
+  function adicionarPizza() {
+    const pizzasSalvas = localStorage.getItem("pizzas");
 
-  function salvarProduto(e: React.FormEvent) {
-    e.preventDefault();
+    let lista = [];
 
-    if (!nome || !preco) return;
-
-    if (editandoId) {
-      const atualizados = produtos.map((produto) =>
-        produto.id === editandoId
-          ? { ...produto, nome, preco: Number(preco) }
-          : produto
-      );
-
-      setProdutos(atualizados);
-      localStorage.setItem("produtos", JSON.stringify(atualizados));
-      setEditandoId(null);
-    } else {
-      const novoProduto = {
-        id: Date.now(),
-        nome,
-        preco: Number(preco),
-      };
-
-      const atualizados = [...produtos, novoProduto];
-      setProdutos(atualizados);
-      localStorage.setItem("produtos", JSON.stringify(atualizados));
+    if (pizzasSalvas) {
+      lista = JSON.parse(pizzasSalvas);
     }
+
+    const novaPizza = {
+      id: Date.now(),
+      nome,
+      preco: Number(preco),
+    };
+
+    lista.push(novaPizza);
+
+    localStorage.setItem("pizzas", JSON.stringify(lista));
 
     setNome("");
     setPreco("");
-  }
 
-  function editarProduto(produto: Produto) {
-    setNome(produto.nome);
-    setPreco(produto.preco.toString());
-    setEditandoId(produto.id);
-  }
-
-  function excluirProduto(id: number) {
-    const atualizados = produtos.filter((produto) => produto.id !== id);
-    setProdutos(atualizados);
-    localStorage.setItem("produtos", JSON.stringify(atualizados));
+    alert("Pizza adicionada!");
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-8">Produtos</h1>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-6">
+        Gerenciar Produtos
+      </h1>
 
-      <form
-        onSubmit={salvarProduto}
-        className="bg-white p-6 rounded-xl shadow mb-8"
-      >
-        <div className="flex gap-4">
-          <input
-            type="text"
-            placeholder="Nome do produto"
-            className="flex-1 p-3 border rounded-lg"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
+      <div className="space-y-4 max-w-md">
 
-          <input
-            type="number"
-            placeholder="Preço"
-            className="w-40 p-3 border rounded-lg"
-            value={preco}
-            onChange={(e) => setPreco(e.target.value)}
-          />
+        <input
+          placeholder="Nome da pizza"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          className="w-full border p-2 rounded"
+        />
 
-          <button
-            type="submit"
-            className="bg-primary text-white px-6 rounded-lg font-bold"
-          >
-            {editandoId ? "Atualizar" : "Cadastrar"}
-          </button>
-        </div>
-      </form>
+        <input
+          placeholder="Preço"
+          type="number"
+          value={preco}
+          onChange={(e) => setPreco(e.target.value)}
+          className="w-full border p-2 rounded"
+        />
 
-      <div className="flex flex-col gap-4">
-        {produtos.map((produto) => (
-          <div
-            key={produto.id}
-            className="bg-white p-4 rounded-xl shadow flex justify-between items-center"
-          >
-            <div>
-              <h2 className="font-semibold">{produto.nome}</h2>
-              <p>R$ {produto.preco.toFixed(2)}</p>
-            </div>
+        <button
+          onClick={adicionarPizza}
+          className="bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Adicionar Pizza
+        </button>
 
-            <div className="flex gap-4">
-              <button
-                onClick={() => editarProduto(produto)}
-                className="text-blue-600 font-semibold"
-              >
-                Editar
-              </button>
-
-              <button
-                onClick={() => excluirProduto(produto.id)}
-                className="text-red-600 font-semibold"
-              >
-                Excluir
-              </button>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
