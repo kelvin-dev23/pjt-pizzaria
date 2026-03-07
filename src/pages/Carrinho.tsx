@@ -151,7 +151,7 @@ export function Carrinho() {
   }
 
   return (
-    <div className="p-8">
+   <div className="p-4 md:p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Seu Carrinho</h1>
 
       {carrinho.length === 0 ? (
@@ -162,7 +162,7 @@ export function Carrinho() {
             {carrinho.map((item, index) => (
               <div
                 key={`${item.id}-${index}`}
-                className="flex justify-between items-center bg-white p-4 shadow rounded-lg"
+                className="flex flex-col md:flex-row md:justify-between md:items-center bg-white p-4 shadow rounded-lg gap-4"
               >
                 <div>
                   <h2 className="font-bold">{item.nome}</h2>
@@ -178,22 +178,22 @@ export function Carrinho() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-3">
+               <div className="flex items-center gap-2">
                   <button
-                    onClick={() => alterarQuantidade(item.id, "diminuir")}
-                    className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
-                  >
-                    -
-                  </button>
+  onClick={() => alterarQuantidade(item.id, "diminuir")}
+  className="bg-secondary text-light w-10 h-10 rounded-lg font-bold"
+>
+  -
+</button>
 
-                  <span>{item.quantidade}</span>
+<span className="font-bold">{item.quantidade}</span>
 
-                  <button
-                    onClick={() => alterarQuantidade(item.id, "aumentar")}
-                    className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
-                  >
-                    +
-                  </button>
+<button
+  onClick={() => alterarQuantidade(item.id, "aumentar")}
+  className="bg-secondary text-light w-10 h-10 rounded-lg font-bold"
+>
+  +
+</button>
                 </div>
 
                 <span className="font-semibold">
@@ -202,7 +202,7 @@ export function Carrinho() {
 
                 <button
                   onClick={() => removerDoCarrinho(item.id)}
-                  className="bg-secondary text-light px-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
+                 className="bg-secondary text-light px-4 py-2 rounded-lg w-full md:w-auto"
                 >
                   Remover
                 </button>

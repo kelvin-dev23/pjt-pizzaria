@@ -18,10 +18,10 @@ export function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className="flex min-h-screen overflow-x-hidden">
 
       {/* SIDEBAR */}
-      <aside className="w-64 bg-primary text-light p-6">
+      <aside className="hidden md:block w-64 bg-green-800 text-white">
         <h2 className="text-2xl font-bold mb-8">Painel Admin</h2>
 
         <nav className="flex flex-col gap-4 font-semibold">
